@@ -1,0 +1,785 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git,钩子,githooks," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。 网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。">
+<meta name="keywords" content="git,钩子,githooks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git hooks自动化部署及踩坑全过程">
+<meta property="og:url" content="http://www.jiluz.com/2017/03/07/git-hooks/index.html">
+<meta property="og:site_name" content="记录者|Arthur&#39;blog">
+<meta property="og:description" content="由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。 网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。">
+<meta property="og:updated_time" content="2017-05-01T04:00:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git hooks自动化部署及踩坑全过程">
+<meta name="twitter:description" content="由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。 网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6227789026712094000',
+      author: 'Author大大'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.jiluz.com/2017/03/07/git-hooks/"/>
+
+
+
+
+
+  <title> git hooks自动化部署及踩坑全过程 | 记录者|Arthur'blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d7a6c2ca8932298da5543dfd777dd27f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录者|Arthur'blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.jiluz.com/2017/03/07/git-hooks/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Arthur Li">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/img/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="记录者|Arthur'blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="记录者|Arthur'blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                git hooks自动化部署及踩坑全过程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-07T09:46:48+08:00">
+                2017-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/07/git-hooks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/07/git-hooks/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">  本文阅读</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。</p>
+<p>网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。<br><a id="more"></a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/sh</div><div class="line">unset GIT_DIR</div><div class="line">NowPath='pwd'</div><div class="line">DeployPath=/home/user/testDeploy #代码的仓库目录</div><div class="line">cd $DeployPath</div><div class="line">git pull origin master</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
+<p>搜了半天代码基本上就是这个版本</p>
+<p>下面说一下反复失败之后实现自动化部署的个人理解：   </p>
+<p><strong>1. 远程裸仓库和远程服务器端代码仓库</strong> </p>
+<p>需要理解清楚的是，我们实现git自动化项目部署的流程应该是<strong>每次提交到远程裸仓库，裸仓库接收到push之后自动给代码仓库执行pull的操作。</strong><br>这里裸仓库应该与服务器代码库在一台服务器上，对裸仓库和代码库不理解的自行google。了解原理之后，就要奔着这个目标去实现。</p>
+<p><strong>2. git hooks出来管事</strong></p>
+<p>重点是上面提到裸仓库接收push之后怎么自动去执行pull操作，git仓库中有个.git文件夹，里面有个hooks文件夹，git 钩子就藏在这。里面有很多文件，其中有个<code>post-receive.sample</code>文件（没有的话也没有关系，新建一个<code>post-receive</code>文件，注意不带sample后缀，带上这个后缀默认是不触发执行的），我们要做的脚本代码就在这里个文件里面完成。上面提到的代码就是放到这个文件里面的。上面代码copy进去试一下，发现根本没有成功。</p>
+<p><strong>3. 权限在作怪</strong></p>
+<ul>
+<li>给git用户添加root公匙免密</li>
+</ul>
+<p>脚本其实确实执行了，但是正常<code>git pull</code>需要输入git用户的密码，脚本里面没法输入密码，所以就需要让你的root用户免密码。这时就需要把root用户的公匙添加到<code>/home/git/.ssh/authorized_keys</code>文件中。</p>
+<blockquote>
+<blockquote>
+<p>生成公匙，比如root用户：执行命令<code>ssh-keygen -t rsa -C&quot;你的邮箱或者别的&quot;</code>然后提示你输入密码，不用输一直回车就ok了，然后去<code>~/.ssh/</code>下面就可以看到<code>id_rsa</code>和<code>id_rsa.pub</code>文件了，把pub里面的内容放到上面的git用户的文件中就可以了。</p>
+</blockquote>
+</blockquote>
+<p>但是，做完这些会发现测试提交还是有问题。   </p>
+<ul>
+<li>给git用户添加sudo权限</li>
+</ul>
+<p>找了半天发现还有一个权限的问题，就是当触发<code>post-receive</code>钩子时，用户没有权限在网站目录执行<code>git pull origin master</code>，所以会一直操作不成功。我们需要给git用户sudo的权限，<code>vim /etc/sudoers</code>找到<code>root    ALL=(ALL)       ALL</code>这一行，在下面加上<code>git   ALL=&lt;ALL&gt;   NOPASSWD:ALL</code><br><code>NOPASSWD</code>是sudo时免密。</p>
+<p><strong>4. 最终实现</strong></p>
+<p>前面的准备工作已经完成，现在只需要稍微修改上面的代码就可以了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/sh</div><div class="line">unset GIT_DIR</div><div class="line">NowPath=`pwd`</div><div class="line">DeployPath="/mnt/arthur" #代码的仓库目录</div><div class="line">echo $DeployPath</div><div class="line">cd $DeployPath # 切换到代码目录</div><div class="line">echo "****************************"</div><div class="line">sudo git pull origin master # 执行pull操作</div><div class="line">echo "******************"</div><div class="line">sudo chown -R www:www $DeployPath # 把网站文件所有者改为原来的，因为sudo执行pull后会把改动的文件的所有者变为root</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
+<p>对了，编辑完<code>post-receive</code>文件，要赋予其执行权限，<code>chmod +x post-receive</code>，并且改变文件所有者<code>chown git:git post-receive</code>。<br>这时候在本地电脑提交一下，看到如下面所示，即表示成功啦！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div><div class="line">Counting objects: 7, done.</div><div class="line">Delta compression using up to 4 threads.</div><div class="line">Compressing objects: 100% (3/3), done.</div><div class="line">Writing objects: 100% (4/4), 1.27 KiB | 0 bytes/s, done.</div><div class="line">Total 4 (delta 1), reused 0 (delta 0)</div><div class="line">remote: /mnt/arthur</div><div class="line">remote: **************************** # 这是脚本打印的，两行星号中间的是自动执行pull返回的成功信息</div><div class="line">remote: From server:/home/repo/arthur</div><div class="line">remote:  * branch            master     -&gt; FETCH_HEAD</div><div class="line">remote: Updating 4473606..67b1561</div><div class="line">remote: Fast-forward</div><div class="line">remote:  hexo/git-hooks.md | 36 +++++++++++++++++++++++++++++++-----</div><div class="line">remote:  1 file changed, 31 insertions(+), 5 deletions(-)</div><div class="line">remote: ******************</div><div class="line">To git@server:/home/repo/arthur.git</div><div class="line">   4473606..67b1561  master -&gt; master</div></pre></td></tr></table></figure></p>
+<p><strong>总结</strong></p>
+<p>先弄清楚自动化部署原理，然后往这个原理方向去具体实施。上面每一步都要成功，不要急于查看结果，比如给git用户添加公匙，要现在网站仓库用root用户pull一下试试是否需要密码，不需要则这一步才算成功，然后进行下一步。有问题欢迎交流，指正。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>多少为所谓，重要的是那颗学习成长的心！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechat-reward-image.png" alt="Arthur Li WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/钩子/" rel="tag"># 钩子</a>
+          
+            <a href="/tags/githooks/" rel="tag"># githooks</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/17/learn-plan/" rel="next" title="2017的努力">
+                <i class="fa fa-chevron-left"></i> 2017的努力
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/27/read-plan1/" rel="prev" title="阅读书单2017">
+                阅读书单2017 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/07/git-hooks/"
+           data-title="git hooks自动化部署及踩坑全过程" data-url="http://www.jiluz.com/2017/03/07/git-hooks/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.jpg"
+               alt="Arthur Li" />
+          <p class="site-author-name" itemprop="name">Arthur Li</p>
+          <p class="site-description motion-element" itemprop="description">记录者用于记录arthur的个人学习经历，工作中解决的问题，可以加群一起学习成长：345885057。</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Li</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user">本站访客</i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人</span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye">本站总访问量</i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"arthurs"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
