@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="git,钩子,githooks," />
+  <meta name="keywords" content="crontab,定时任务," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。 网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。">
-<meta name="keywords" content="git,钩子,githooks">
+<meta name="description" content="最近需要做一些服务器的自动备份，就用到了linux的定时命令crontab。    查看和编辑crontab文件 查看当前用户是否有计划任务，crontab -l  查看。 如果有任务直接 crontab -e进行编辑。 crontab格式说明每个任务都由六个栏位组成，每个含义如下">
+<meta name="keywords" content="crontab,定时任务">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git hooks自动化部署及踩坑全过程">
-<meta property="og:url" content="http://www.jiluz.com/2017/03/07/git-hooks/index.html">
+<meta property="og:title" content="crontab定时任务">
+<meta property="og:url" content="http://www.jiluz.com/2017/05/13/crontab/index.html">
 <meta property="og:site_name" content="记录者|Arthur&#39;blog">
-<meta property="og:description" content="由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。 网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。">
-<meta property="og:updated_time" content="2017-05-01T04:00:51.000Z">
+<meta property="og:description" content="最近需要做一些服务器的自动备份，就用到了linux的定时命令crontab。    查看和编辑crontab文件 查看当前用户是否有计划任务，crontab -l  查看。 如果有任务直接 crontab -e进行编辑。 crontab格式说明每个任务都由六个栏位组成，每个含义如下">
+<meta property="og:updated_time" content="2017-05-13T03:45:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="git hooks自动化部署及踩坑全过程">
-<meta name="twitter:description" content="由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。 网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。">
+<meta name="twitter:title" content="crontab定时任务">
+<meta name="twitter:description" content="最近需要做一些服务器的自动备份，就用到了linux的定时命令crontab。    查看和编辑crontab文件 查看当前用户是否有计划任务，crontab -l  查看。 如果有任务直接 crontab -e进行编辑。 crontab格式说明每个任务都由六个栏位组成，每个含义如下">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://www.jiluz.com/2017/03/07/git-hooks/"/>
+  <link rel="canonical" href="http://www.jiluz.com/2017/05/13/crontab/"/>
 
 
 
 
 
-  <title> git hooks自动化部署及踩坑全过程 | 记录者|Arthur'blog </title>
+  <title> crontab定时任务 | 记录者|Arthur'blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -288,7 +288,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://www.jiluz.com/2017/03/07/git-hooks/">
+  <link itemprop="mainEntityOfPage" href="http://www.jiluz.com/2017/05/13/crontab/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Arthur Li">
@@ -312,7 +312,7 @@
             
             
               
-                git hooks自动化部署及踩坑全过程
+                crontab定时任务
               
             
           </h1>
@@ -327,8 +327,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-07T09:46:48+08:00">
-                2017-03-07
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-13T09:40:48+08:00">
+                2017-05-13
               </time>
             
 
@@ -368,8 +368,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/07/git-hooks/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/07/git-hooks/" itemprop="commentCount"></span>
+                <a href="/2017/05/13/crontab/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/13/crontab/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -400,34 +400,44 @@
       
 
       
-        <p>由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。</p>
-<p>网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。<br><a id="more"></a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></div><div class="line">unset GIT_DIR</div><div class="line">NowPath='pwd'</div><div class="line">DeployPath=/home/user/testDeploy #代码的仓库目录</div><div class="line">cd $DeployPath</div><div class="line">git pull origin master</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
-<p>搜了半天代码基本上就是这个版本</p>
-<p>下面说一下反复失败之后实现自动化部署的个人理解：   </p>
-<p><strong>1. 远程裸仓库和远程服务器端代码仓库</strong> </p>
-<p>需要理解清楚的是，我们实现git自动化项目部署的流程应该是<strong>每次提交到远程裸仓库，裸仓库接收到push之后自动给代码仓库执行pull的操作。</strong><br>这里裸仓库应该与服务器代码库在一台服务器上，对裸仓库和代码库不理解的自行google。了解原理之后，就要奔着这个目标去实现。</p>
-<p><strong>2. git hooks出来管事</strong></p>
-<p>重点是上面提到裸仓库接收push之后怎么自动去执行pull操作，git仓库中有个.git文件夹，里面有个hooks文件夹，git 钩子就藏在这。里面有很多文件，其中有个<code>post-receive.sample</code>文件（没有的话也没有关系，新建一个<code>post-receive</code>文件，注意不带sample后缀，带上这个后缀默认是不触发执行的），我们要做的脚本代码就在这里个文件里面完成。上面提到的代码就是放到这个文件里面的。上面代码copy进去试一下，发现根本没有成功。</p>
-<p><strong>3. 权限在作怪</strong></p>
-<ul>
-<li>给git用户添加root公匙免密</li>
+        <p>最近需要做一些服务器的自动备份，就用到了linux的定时命令crontab。   </p>
+<h1 id="查看和编辑crontab文件"><a href="#查看和编辑crontab文件" class="headerlink" title="查看和编辑crontab文件"></a>查看和编辑crontab文件</h1><ul>
+<li>查看当前用户是否有计划任务，<code>crontab -l</code>  查看。</li>
+<li>如果有任务直接 <code>crontab -e</code>进行编辑。</li>
+<li>crontab格式说明<br>每个任务都由六个栏位组成，每个含义如下</li>
 </ul>
-<p>脚本其实确实执行了，但是正常<code>git pull</code>需要输入git用户的密码，脚本里面没法输入密码，所以就需要让你的root用户免密码。这时就需要把root用户的公匙添加到<code>/home/git/.ssh/authorized_keys</code>文件中。</p>
-<blockquote>
-<blockquote>
-<p>生成公匙，比如root用户：执行命令<code>ssh-keygen -t rsa -C&quot;你的邮箱或者别的&quot;</code>然后提示你输入密码，不用输一直回车就ok了，然后去<code>~/.ssh/</code>下面就可以看到<code>id_rsa</code>和<code>id_rsa.pub</code>文件了，把pub里面的内容放到上面的git用户的文件中就可以了。</p>
-</blockquote>
-</blockquote>
-<p>但是，做完这些会发现测试提交还是有问题。   </p>
-<ul>
-<li>给git用户添加sudo权限</li>
+<a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>意义</th>
+<th>分钟</th>
+<th>小时</th>
+<th>日期</th>
+<th>月份</th>
+<th>星期</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>范围</td>
+<td>0-59</td>
+<td>0-23</td>
+<td>1-31</td>
+<td>1-12</td>
+<td>0-7</td>
+<td>command</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意：</strong> 0或者7都代表周日（星期天）<br>例如：<code>10 2 1 * *  /home/ahui/bakup.sh</code>*号表示任意，这个任务表示每月1号的凌晨2点10分执行home下的那个备份脚本。</p>
+<h1 id="新建crontab文件"><a href="#新建crontab文件" class="headerlink" title="新建crontab文件"></a>新建crontab文件</h1><ul>
+<li>如果第一步查看不存在计划任务，这时候需要我们新建crontab文件。</li>
+<li>新建mycrontab.cron文件，内容按照上面编辑方式写入你需要的任务，如：<code>10 2 1 * *  /home/ahui/bakup.sh</code></li>
+<li>然后执行<code>crontab mycrontab.cron</code>之后，用<code>crontab -l</code>就可以查看到刚才添加的任务了。如果想再编辑，重复上面的查看和编辑步骤。</li>
 </ul>
-<p>找了半天发现还有一个权限的问题，就是当触发<code>post-receive</code>钩子时，用户没有权限在网站目录执行<code>git pull origin master</code>，所以会一直操作不成功。我们需要给git用户sudo的权限，<code>vim /etc/sudoers</code>找到<code>root    ALL=(ALL)       ALL</code>这一行，在下面加上<code>git   ALL=&lt;ALL&gt;   NOPASSWD:ALL</code><br><code>NOPASSWD</code>是sudo时免密。</p>
-<p><strong>4. 最终实现</strong></p>
-<p>前面的准备工作已经完成，现在只需要稍微修改上面的代码就可以了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></div><div class="line">unset GIT_DIR</div><div class="line">NowPath=`pwd`</div><div class="line">DeployPath="/mnt/arthur" #代码的仓库目录</div><div class="line">echo $DeployPath</div><div class="line">cd $DeployPath # 切换到代码目录</div><div class="line">echo "****************************"</div><div class="line">sudo git pull origin master # 执行pull操作</div><div class="line">echo "******************"</div><div class="line">sudo chown -R www:www $DeployPath # 把网站文件所有者改为原来的，因为sudo执行pull后会把改动的文件的所有者变为root</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
-<p>对了，编辑完<code>post-receive</code>文件，要赋予其执行权限，<code>chmod +x post-receive</code>，并且改变文件所有者<code>chown git:git post-receive</code>。<br>这时候在本地电脑提交一下，看到如下面所示，即表示成功啦！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div><div class="line">Counting objects: 7, done.</div><div class="line">Delta compression using up to 4 threads.</div><div class="line">Compressing objects: 100% (3/3), done.</div><div class="line">Writing objects: 100% (4/4), 1.27 KiB | 0 bytes/s, done.</div><div class="line">Total 4 (delta 1), reused 0 (delta 0)</div><div class="line">remote: /mnt/arthur</div><div class="line">remote: **************************** # 这是脚本打印的，两行星号中间的是自动执行pull返回的成功信息</div><div class="line">remote: From server:/home/repo/arthur</div><div class="line">remote:  * branch            master     -&gt; FETCH_HEAD</div><div class="line">remote: Updating 4473606..67b1561</div><div class="line">remote: Fast-forward</div><div class="line">remote:  hexo/git-hooks.md | 36 +++++++++++++++++++++++++++++++-----</div><div class="line">remote:  1 file changed, 31 insertions(+), 5 deletions(-)</div><div class="line">remote: ******************</div><div class="line">To git@server:/home/repo/arthur.git</div><div class="line">   4473606..67b1561  master -&gt; master</div></pre></td></tr></table></figure></p>
-<p><strong>总结</strong></p>
-<p>先弄清楚自动化部署原理，然后往这个原理方向去具体实施。上面每一步都要成功，不要急于查看结果，比如给git用户添加公匙，要现在网站仓库用root用户pull一下试试是否需要密码，不需要则这一步才算成功，然后进行下一步。有问题欢迎交流，指正。</p>
+<p><strong>注：</strong> 如果想更深入了解<code>crontab</code>，访问<a href="http://www.cnblogs.com/peida/archive/2013/01/08/2850483.html" target="_blank" rel="external">文章1</a>，<a href="http://www.cnblogs.com/ggjucheng/archive/2012/08/19/2646763.html" target="_blank" rel="external">文章2</a>。</p>
 
       
     </div>
@@ -467,11 +477,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/git/" rel="tag"># git</a>
+            <a href="/tags/crontab/" rel="tag"># crontab</a>
           
-            <a href="/tags/钩子/" rel="tag"># 钩子</a>
-          
-            <a href="/tags/githooks/" rel="tag"># githooks</a>
+            <a href="/tags/定时任务/" rel="tag"># 定时任务</a>
           
         </div>
       
@@ -484,8 +492,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/17/learn-plan/" rel="next" title="2017的努力">
-                <i class="fa fa-chevron-left"></i> 2017的努力
+              <a href="/2017/03/27/read-plan1/" rel="next" title="阅读书单2017">
+                <i class="fa fa-chevron-left"></i> 阅读书单2017
               </a>
             
           </div>
@@ -493,10 +501,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/27/read-plan1/" rel="prev" title="阅读书单2017">
-                阅读书单2017 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -522,8 +526,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/07/git-hooks/"
-           data-title="git hooks自动化部署及踩坑全过程" data-url="http://www.jiluz.com/2017/03/07/git-hooks/">
+      <div class="ds-thread" data-thread-key="2017/05/13/crontab/"
+           data-title="crontab定时任务" data-url="http://www.jiluz.com/2017/05/13/crontab/">
       </div>
     
   </div>
@@ -547,8 +551,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/img/avatar.jpg"
@@ -604,6 +617,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#查看和编辑crontab文件"><span class="nav-number">1.</span> <span class="nav-text">查看和编辑crontab文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建crontab文件"><span class="nav-number">2.</span> <span class="nav-text">新建crontab文件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
