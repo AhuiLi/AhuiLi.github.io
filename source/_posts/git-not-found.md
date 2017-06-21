@@ -12,3 +12,5 @@ categories: linux
 
 ### 解决办法    
 ```/etc/sudoers```里面的这一行注释掉 ```#Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin```
+
+链接：[git 自动化部署](http://jiluz.com/2017/03/07/git-hooks/)
