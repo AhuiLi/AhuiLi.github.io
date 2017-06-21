@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="服务器：centos6.8 问题描述 在利用git钩子实现自动化网站部署的时候，需要脚本执行pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```    12">
+<meta name="description" content="服务器：centos6.8 问题描述 在利用git钩子实现自动化网站部署的时候，需要脚本执行git pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```">
 <meta name="keywords" content="git,sudo,notfound">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sudo: git: command not found">
 <meta property="og:url" content="http://www.jiluz.com/2017/06/21/git-not-found/index.html">
 <meta property="og:site_name" content="记录者|Arthur&#39;blog">
-<meta property="og:description" content="服务器：centos6.8 问题描述 在利用git钩子实现自动化网站部署的时候，需要脚本执行pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```    12">
-<meta property="og:updated_time" content="2017-06-21T02:14:27.000Z">
+<meta property="og:description" content="服务器：centos6.8 问题描述 在利用git钩子实现自动化网站部署的时候，需要脚本执行git pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```">
+<meta property="og:updated_time" content="2017-06-21T02:17:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sudo: git: command not found">
-<meta name="twitter:description" content="服务器：centos6.8 问题描述 在利用git钩子实现自动化网站部署的时候，需要脚本执行pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```    12">
+<meta name="twitter:description" content="服务器：centos6.8 问题描述 在利用git钩子实现自动化网站部署的时候，需要脚本执行git pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```">
 
 
 
@@ -402,7 +402,7 @@
       
         <p>服务器：centos6.8</p>
 <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><blockquote>
-<p>在利用git钩子实现自动化网站部署的时候，需要脚本执行<figure class="highlight plain"><figcaption><span>pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```    </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 解决办法    </div><div class="line">```/etc/sudoers```里面的这一行注释掉 ```#Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin</div></pre></td></tr></table></figure></p>
+<p>在利用git钩子实现自动化网站部署的时候，需要脚本执行<figure class="highlight plain"><figcaption><span>git pull origin feature```,因为直接执行会提示没有权限（我打印出当前执行用户，是root，但不知道为什么没权限），所以需要执行```sudo git pull origin feature```，这个时候总提示```sudo: git: command not found```    </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 解决办法    </div><div class="line">```/etc/sudoers```里面的这一行注释掉 ```#Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin</div></pre></td></tr></table></figure></p>
 </blockquote>
 <p>链接：<a href="http://jiluz.com/2017/03/07/git-hooks/" target="_blank" rel="external">git 自动化部署</a></p>
 
