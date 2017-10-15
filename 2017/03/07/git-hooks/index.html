@@ -401,7 +401,7 @@
 
       
         <p>由于git每次有提交，服务器端都需要手动pull，很麻烦，于是研究一下git hooks想实现自动化网站部署。</p>
-<p>网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。<br><a id="more"></a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></div><div class="line">unset GIT_DIR</div><div class="line">NowPath='pwd'</div><div class="line">DeployPath=/home/user/testDeploy #代码的仓库目录</div><div class="line">cd $DeployPath</div><div class="line">git pull origin master</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
+<p>网上搜索:随便一搜都能出来下面一段这样的代码，然后告诉你这就完成了。本以为copy过来真的就好使了，但事实总会不那么尽如人意。<br><a id="more"></a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/sh</div><div class="line">unset GIT_DIR</div><div class="line">NowPath='pwd'</div><div class="line">DeployPath=/home/user/testDeploy #代码的仓库目录</div><div class="line">cd $DeployPath</div><div class="line">git pull origin master</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
 <p>搜了半天代码基本上就是这个版本</p>
 <p>下面说一下反复失败之后实现自动化部署的个人理解：   </p>
 <p><strong>1. 远程裸仓库和远程服务器端代码仓库</strong> </p>
@@ -424,7 +424,7 @@
 </ul>
 <p>找了半天发现还有一个权限的问题，就是当触发<code>post-receive</code>钩子时，用户没有权限在网站目录执行<code>git pull origin master</code>，所以会一直操作不成功。我们需要给git用户sudo的权限，<code>vim /etc/sudoers</code>找到<code>root    ALL=(ALL)       ALL</code>这一行，在下面加上<code>git   ALL=&lt;ALL&gt;   NOPASSWD:ALL</code><br><code>NOPASSWD</code>是sudo时免密。</p>
 <p><strong>4. 最终实现</strong></p>
-<p>前面的准备工作已经完成，现在只需要稍微修改上面的代码就可以了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></div><div class="line">unset GIT_DIR</div><div class="line">NowPath=`pwd`</div><div class="line">DeployPath="/mnt/arthur" #代码的仓库目录</div><div class="line">echo $DeployPath</div><div class="line">cd $DeployPath # 切换到代码目录</div><div class="line">echo "****************************"</div><div class="line">sudo git pull origin master # 执行pull操作</div><div class="line">echo "******************"</div><div class="line">sudo chown -R www:www $DeployPath # 把网站文件所有者改为原来的，因为sudo执行pull后会把改动的文件的所有者变为root</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
+<p>前面的准备工作已经完成，现在只需要稍微修改上面的代码就可以了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/sh</div><div class="line">unset GIT_DIR</div><div class="line">NowPath=`pwd`</div><div class="line">DeployPath="/mnt/arthur" #代码的仓库目录</div><div class="line">echo $DeployPath</div><div class="line">cd $DeployPath # 切换到代码目录</div><div class="line">echo "****************************"</div><div class="line">sudo git pull origin master # 执行pull操作</div><div class="line">echo "******************"</div><div class="line">sudo chown -R www:www $DeployPath # 把网站文件所有者改为原来的，因为sudo执行pull后会把改动的文件的所有者变为root</div><div class="line">cd $NowPath</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
 <p>对了，编辑完<code>post-receive</code>文件，要赋予其执行权限，<code>chmod +x post-receive</code>，并且改变文件所有者<code>chown git:git post-receive</code>。<br>这时候在本地电脑提交一下，看到如下面所示，即表示成功啦！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div><div class="line">Counting objects: 7, done.</div><div class="line">Delta compression using up to 4 threads.</div><div class="line">Compressing objects: 100% (3/3), done.</div><div class="line">Writing objects: 100% (4/4), 1.27 KiB | 0 bytes/s, done.</div><div class="line">Total 4 (delta 1), reused 0 (delta 0)</div><div class="line">remote: /mnt/arthur</div><div class="line">remote: **************************** # 这是脚本打印的，两行星号中间的是自动执行pull返回的成功信息</div><div class="line">remote: From server:/home/repo/arthur</div><div class="line">remote:  * branch            master     -&gt; FETCH_HEAD</div><div class="line">remote: Updating 4473606..67b1561</div><div class="line">remote: Fast-forward</div><div class="line">remote:  hexo/git-hooks.md | 36 +++++++++++++++++++++++++++++++-----</div><div class="line">remote:  1 file changed, 31 insertions(+), 5 deletions(-)</div><div class="line">remote: ******************</div><div class="line">To git@server:/home/repo/arthur.git</div><div class="line">   4473606..67b1561  master -&gt; master</div></pre></td></tr></table></figure></p>
 <p><strong>总结</strong></p>
 <p>先弄清楚自动化部署原理，然后往这个原理方向去具体实施。上面每一步都要成功，不要急于查看结果，比如给git用户添加公匙，要现在网站仓库用root用户pull一下试试是否需要密码，不需要则这一步才算成功，然后进行下一步。有问题欢迎交流，指正。</p>
@@ -561,7 +561,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -579,7 +579,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
