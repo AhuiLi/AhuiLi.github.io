@@ -4,7 +4,7 @@ description: 记录者用于记录arthur的个人学习经历，工作中解决�
 author: Arthur Li
 language: zh-Hans
 timezone: null
-url: 'http://www.jiluz.com'
+url: 'http://arthurli.github.io/'
 root: /
 permalink: ':year/:month/:day/:title/'
 permalink_defaults: null
@@ -43,7 +43,7 @@ baidu_analytics: d7a6c2ca8932298da5543dfd777dd27f
 theme: next
 deploy:
   type: git
-  repository: 'git@github.com:AhuiLi/AhuiLi.github.io.git'
+  repository: 'git@github.com:AhuiLi/arthurli.github.io.git'
   branch: master
 core:
   autocrlf: false
