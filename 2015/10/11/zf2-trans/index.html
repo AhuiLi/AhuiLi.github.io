@@ -1,0 +1,802 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ZendFramework2,translate,多语言配置,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="Zend framework 2 多语言配置 &amp;#160; &amp;#160; &amp;#160; &amp;#160;企业网站一般常用的语言就是中文，有的为了高大上的与国际接轨再加个英文版（好吧，实际需要嘛，人家肯定不是为了装逼的嘛。)在开发中菜鸟的我一般都是把页面写两份，就把字翻译一下，好Low有木有。。。现在又需要日文了，我要复制三份了，我去！有这个时间不如研究一下多语言的配置喽。下面说一下自己通过搜索与实践配">
+<meta name="keywords" content="ZendFramework2,translate,多语言配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zendframework2">
+<meta property="og:url" content="http://arthurli.github.io/2015/10/11/zf2-trans/index.html">
+<meta property="og:site_name" content="记录者|Arthur&#39;blog">
+<meta property="og:description" content="Zend framework 2 多语言配置 &amp;#160; &amp;#160; &amp;#160; &amp;#160;企业网站一般常用的语言就是中文，有的为了高大上的与国际接轨再加个英文版（好吧，实际需要嘛，人家肯定不是为了装逼的嘛。)在开发中菜鸟的我一般都是把页面写两份，就把字翻译一下，好Low有木有。。。现在又需要日文了，我要复制三份了，我去！有这个时间不如研究一下多语言的配置喽。下面说一下自己通过搜索与实践配">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://arthurli.github.io/img/module-config.png">
+<meta property="og:image" content="http://arthurli.github.io/img/translator.png">
+<meta property="og:image" content="http://arthurli.github.io/img/set-language.png">
+<meta property="og:image" content="http://arthurli.github.io/img/module.png">
+<meta property="og:image" content="http://arthurli.github.io/img/zh-cn.png">
+<meta property="og:updated_time" content="2019-10-30T03:23:41.834Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zendframework2">
+<meta name="twitter:description" content="Zend framework 2 多语言配置 &amp;#160; &amp;#160; &amp;#160; &amp;#160;企业网站一般常用的语言就是中文，有的为了高大上的与国际接轨再加个英文版（好吧，实际需要嘛，人家肯定不是为了装逼的嘛。)在开发中菜鸟的我一般都是把页面写两份，就把字翻译一下，好Low有木有。。。现在又需要日文了，我要复制三份了，我去！有这个时间不如研究一下多语言的配置喽。下面说一下自己通过搜索与实践配">
+<meta name="twitter:image" content="http://arthurli.github.io/img/module-config.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6227789026712094000',
+      author: 'Author大大'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://arthurli.github.io/2015/10/11/zf2-trans/">
+
+
+
+
+
+  <title> Zendframework2 | 记录者|Arthur'blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d7a6c2ca8932298da5543dfd777dd27f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录者|Arthur'blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://arthurli.github.io/2015/10/11/zf2-trans/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Arthur Li">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="/img/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="记录者|Arthur'blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="记录者|Arthur'blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Zendframework2
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-11T23:23:09+00:00">
+                2015-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/11/zf2-trans/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/11/zf2-trans/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">  本文阅读</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Zend-framework-2-多语言配置"><a href="#Zend-framework-2-多语言配置" class="headerlink" title="Zend framework 2 多语言配置"></a>Zend framework 2 多语言配置</h1><hr>
+<p>&#160; &#160; &#160; &#160;企业网站一般常用的语言就是中文，有的为了高大上的与国际接轨再加个英文版（好吧，实际需要嘛，人家肯定不是为了装逼的嘛。)在开发中菜鸟的我一般都是把页面写两份，就把字翻译一下，好Low有木有。。。现在又需要日文了，我要复制三份了，我去！有这个时间不如研究一下多语言的配置喽。下面说一下自己通过搜索与实践配置ZF2的多语言吧。<br>&#160; &#160; &#160; &#160;这里我就当看文章的人都知道ZF2的目录了，不了解ZF2也没必要看额，ZF2和ZF不一样哦。因为本人也是菜鸟，对ZF2学习很浅，这里不多介绍，直接拿出代码和说明供你解决问题就行。<br><a id="more"></a><br>&#160; &#160; &#160; &#160;先看module下面默认的Application模块下的配置文件<br><img src="/img/module-config.png" alt="img"></p>
+<p>&#160; &#160; &#160; &#160;在module.config.php内加入下面两段代码，具体修改看图<br><img src="/img/translator.png" alt="img"><br><img src="/img/set-language.png" alt="img"></p>
+<p>&#160; &#160; &#160; &#160;接下来配置一下module.php<br><img src="/img/module.png" alt="img"></p>
+<p>&#160; &#160; &#160; &#160;Module.php多语言配置，直接在Zend Studio里建的工程，也是默认就开启了多语言配置。这里不说了，想省事的我下面会贴出代码。基本上不用你干什么， 你也可以不用理解代码是干啥的。完成了上面的工作之后基本上就可以了，什么？逗我？具体怎么用嘛，现在具体说一下。</p>
+<p>&#160; &#160; &#160; &#160;先说一下语言包怎么写。上图Application目录下有个language文件夹，里面就包含很多语言包，很多国家啦，不过他是默认gettext类型的，也就是.mo文件，不过这里不采用那个，咱们用更简单的方式，php数组。所以上面配置类型的时候要写phparray额。由于上面配置的语言包位置在Application下的language文件夹里，所以在language下面新建个中文的语言包，<strong>注意：这里语言包命名规则要和.mo命名一样哦，否则上面配置文件会匹配不着。</strong>中文的是zh_CN,新建个zh_CN.php文件，内容我就简单写一下啦。</p>
+<h2 id><a href="#" class="headerlink" title></a><img src="/img/zh-cn.png" alt="img"></h2><p>&#160; &#160; &#160; &#160;OK，到这里就差什么了？访问呀有木有。语言初始化在框架加载的时候就做了，所以不用我们干什么了，直接用就行啦，在view文件里面，比如index.phtml里面直接输出下面的就行啦！<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;translate(<span class="string">'Arthur'</span>);<span class="meta">?&gt;</span>&lt;/h1&gt;</span><br></pre></td></tr></table></figure></p>
+<p><font color="#00FFFF">这里说明一下：不是说多语言吗，我写了中英两个语言包，访问的时候他调用的是哪个呀？这个就是Module.php的作用啦，还记得上面跟大家说的不用看懂的代码了么，他的代码实际实现就是调动哪个语言包的功能。他们是有优先级的。</font></p>
+<ol>
+<li>最高的是用户主动设置，也就是在你的访问网址后加上?Language=zh-CN，那他肯定显示中文。</li>
+<li>用户主动设置过，已经被保存在session里面了</li>
+<li>这个优先级最低，用户什么都没做的情况下，程序会从http响应头里面获取Accept-Language，这个就好像是自适应，根据用户地方语言来判断显示什么语言，比方你在用英文的国家，访问的话肯定调用你的英文语言包显示英文。<br>水平太次，写的不好大家见谅，可能有点太过墨迹，主要是为了像我这种菜鸟能看懂嘛。大家有问题的可以回复，我看到一定回答，大家一起学习。下面贴上代码：</li>
+</ol>
+<hr>
+<p>Module.php<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Application</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Mvc</span>\<span class="title">ModuleRouteListener</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Mvc</span>\<span class="title">MvcEvent</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Application</span>\<span class="title">Model</span>\<span class="title">Project</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Application</span>\<span class="title">Model</span>\<span class="title">ProjectTable</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Application</span>\<span class="title">Model</span>\<span class="title">Accout</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Application</span>\<span class="title">Model</span>\<span class="title">AccoutTable</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Application</span>\<span class="title">Model</span>\<span class="title">Company</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Application</span>\<span class="title">Model</span>\<span class="title">CompanyTable</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Db</span>\<span class="title">ResultSet</span>\<span class="title">ResultSet</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Db</span>\<span class="title">TableGateway</span>\<span class="title">TableGateway</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Session</span>\<span class="title">Container</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Session</span>\<span class="title">SessionManager</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Zend</span>\<span class="title">Session</span>\<span class="title">Config</span>\<span class="title">SessionConfig</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Module</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">include</span> <span class="keyword">__DIR__</span> . <span class="string">'/config/module.config.php'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getAutoloaderConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'Zend\Loader\StandardAutoloader'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">                <span class="string">'namespaces'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">                    <span class="keyword">__NAMESPACE__</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/src/'</span> . <span class="keyword">__NAMESPACE__</span>,</span><br><span class="line">                ),</span><br><span class="line">            ),</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getServiceConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function">     </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">             <span class="string">'factories'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">                 <span class="string">'Application\Model\ProjectTable'</span> =&gt;  <span class="function"><span class="keyword">function</span><span class="params">($sm)</span> </span>&#123;</span><br><span class="line">                     $tableGateway = $sm-&gt;get(<span class="string">'ProjectTableGateway2'</span>);</span><br><span class="line">                     $table = <span class="keyword">new</span> ProjectTable($tableGateway);</span><br><span class="line">                     <span class="keyword">return</span> $table;</span><br><span class="line">                 &#125;,</span><br><span class="line">                 <span class="string">'ProjectTableGateway2'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($sm)</span> </span>&#123;</span><br><span class="line">                     $dbAdapter = $sm-&gt;get(<span class="string">'Zend\Db\Adapter\Adapter'</span>);</span><br><span class="line">                     $resultSetPrototype = <span class="keyword">new</span> ResultSet();</span><br><span class="line">                     $resultSetPrototype-&gt;setArrayObjectPrototype(<span class="keyword">new</span> Project());</span><br><span class="line">                     <span class="keyword">return</span> <span class="keyword">new</span> TableGateway(<span class="string">'projects'</span>, $dbAdapter, <span class="keyword">null</span>, $resultSetPrototype);</span><br><span class="line">                 &#125;,</span><br><span class="line">                 </span><br><span class="line">                 <span class="string">'Application\Model\AccoutTable'</span> =&gt;  <span class="function"><span class="keyword">function</span><span class="params">($sm)</span> </span>&#123;</span><br><span class="line">                 	$tableGateway = $sm-&gt;get(<span class="string">'LoginTableGateway2'</span>);</span><br><span class="line">                 	$table = <span class="keyword">new</span> AccoutTable($tableGateway);</span><br><span class="line">                 	<span class="keyword">return</span> $table;</span><br><span class="line">                 &#125;,</span><br><span class="line">                 <span class="string">'LoginTableGateway2'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($sm)</span> </span>&#123;</span><br><span class="line">                 	$dbAdapter = $sm-&gt;get(<span class="string">'Zend\Db\Adapter\Adapter'</span>);</span><br><span class="line">                 	$resultSetPrototype = <span class="keyword">new</span> ResultSet();</span><br><span class="line">                 	$resultSetPrototype-&gt;setArrayObjectPrototype(<span class="keyword">new</span> Accout());</span><br><span class="line">                 	<span class="keyword">return</span> <span class="keyword">new</span> TableGateway(<span class="string">'users'</span>, $dbAdapter, <span class="keyword">null</span>, $resultSetPrototype);</span><br><span class="line">                 &#125;,</span><br><span class="line">                 <span class="string">'Application\Model\CompanyTable'</span> =&gt;  <span class="function"><span class="keyword">function</span><span class="params">($sm)</span> </span>&#123;</span><br><span class="line">                 	$tableGateway = $sm-&gt;get(<span class="string">'CompanyTableGateway'</span>);</span><br><span class="line">                 	$table = <span class="keyword">new</span> CompanyTable($tableGateway);</span><br><span class="line">                 	<span class="keyword">return</span> $table;</span><br><span class="line">                 &#125;,</span><br><span class="line">                 <span class="string">'CompanyTableGateway'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($sm)</span> </span>&#123;</span><br><span class="line">                 	$dbAdapter = $sm-&gt;get(<span class="string">'Zend\Db\Adapter\Adapter'</span>);</span><br><span class="line">                 	$resultSetPrototype = <span class="keyword">new</span> ResultSet();</span><br><span class="line">                 	$resultSetPrototype-&gt;setArrayObjectPrototype(<span class="keyword">new</span> Company());</span><br><span class="line">                 	<span class="keyword">return</span> <span class="keyword">new</span> TableGateway(<span class="string">'companies'</span>, $dbAdapter, <span class="keyword">null</span>, $resultSetPrototype);</span><br><span class="line">                 &#125;,</span><br><span class="line">             ),</span><br><span class="line">             </span><br><span class="line">         );</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onBootstrap</span><span class="params">(MvcEvent $e)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $eventManager = $e-&gt;getApplication()-&gt;getEventManager();</span><br><span class="line">        $moduleRouteListener = <span class="keyword">new</span> ModuleRouteListener();</span><br><span class="line">        $moduleRouteListener-&gt;attach($eventManager);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//调用 multiLanguageSupport 设置语言</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;multiLanguageSupport($e);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">multiLanguageSupport</span><span class="params">(MvcEvent $e)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获取MvcTranslator，是关键一步</span></span><br><span class="line">        $MvcTranslator = $e-&gt;getApplication()</span><br><span class="line">            -&gt;getServiceManager()</span><br><span class="line">            -&gt;get(<span class="string">'MvcTranslator'</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Get http request header</span></span><br><span class="line"><span class="comment">         * 获取头部信息，便于获取 Accept-Language</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        $headers = $e-&gt;getApplication()</span><br><span class="line">            -&gt;getRequest()</span><br><span class="line">            -&gt;getHeaders();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Get correnpond from module.config.php</span></span><br><span class="line"><span class="comment">         * 获得配置中的 correspond，也就是我们允许切换的语言</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        $correspond = $e-&gt;getApplication()</span><br><span class="line">            -&gt;getServiceManager()</span><br><span class="line">            -&gt;get(<span class="string">'config'</span>);</span><br><span class="line">        $correspond = $correspond[<span class="string">'translator'</span>][<span class="string">'correspond'</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Session Language, Priority: 2</span></span><br><span class="line"><span class="comment">         * 设置一个Session容器，在设置了语言后，将语言保存在Session里。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        $SessionConfig = <span class="keyword">new</span> SessionConfig();</span><br><span class="line">        $sessionTimeout = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">365</span>;</span><br><span class="line">        $SessionConfig-&gt;setOptions(<span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'gc_maxlifetime'</span> =&gt; $sessionTimeout, <span class="comment">//php gc 回收时间</span></span><br><span class="line">            <span class="string">'remember_me_seconds'</span> =&gt; $sessionTimeout, <span class="comment">// 记住时间</span></span><br><span class="line">            <span class="string">'cache_expire'</span> =&gt; $sessionTimeout, <span class="comment">// 缓存时间</span></span><br><span class="line">            <span class="string">'cookie_lifetime'</span> =&gt; $sessionTimeout <span class="comment">//发送到浏览器的过期时间</span></span><br><span class="line">        ));</span><br><span class="line">        <span class="comment">//获取Session容器里的语言，优先级介于浏览器和用户设置之间</span></span><br><span class="line">        $Container = <span class="keyword">new</span> Container(<span class="string">'ModuleLanguageSetting'</span>, <span class="keyword">new</span> SessionManager($SessionConfig));</span><br><span class="line">        $sessionLanguage = $Container-&gt;offsetGet(<span class="string">'lang'</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Browser Language, Priority: 1 min</span></span><br><span class="line"><span class="comment">         * 获取浏览器的语言，优先级最小</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        $FiledValParts = <span class="keyword">array</span>();</span><br><span class="line">        <span class="keyword">if</span> ($headers-&gt;has(<span class="string">'Accept-Language'</span>)) &#123;</span><br><span class="line">            $FiledValParts = $headers-&gt;get(<span class="string">'Accept-Language'</span>)-&gt;getPrioritized();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Url Language, Priority: 3 max</span></span><br><span class="line"><span class="comment">         * 在Url中获取?Language=zh-CN，这个优先级最高，因为他可能是用户主动设置的语言</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        $requestLanguage = $e-&gt;getRequest()-&gt;getQuery(<span class="string">'language'</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Setting language</span></span><br><span class="line"><span class="comment">         * 通过各种优先级的判断得出最后需要使用的语言和语言缩写</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        $resultLanguage = <span class="string">''</span>;</span><br><span class="line">        $resultLanguageAbbr = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">if</span> (! <span class="keyword">empty</span>($requestLanguage) || ! <span class="keyword">empty</span>($sessionLanguage)) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (! <span class="keyword">empty</span>($requestLanguage)) &#123;</span><br><span class="line">                $readyLanguge = $requestLanguage;</span><br><span class="line">            &#125; <span class="keyword">elseif</span> (! <span class="keyword">empty</span>($sessionLanguage)) &#123;</span><br><span class="line">                $readyLanguge = $sessionLanguage;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">foreach</span> ($correspond <span class="keyword">as</span> $lang =&gt; $langItem) &#123;</span><br><span class="line">                <span class="keyword">if</span> (in_array($readyLanguge, $langItem[<span class="string">'include'</span>])) &#123;</span><br><span class="line">                    </span><br><span class="line">                    $resultLanguage = $lang;</span><br><span class="line">                    $resultLanguageAbbr = $langItem[<span class="string">'abbr'</span>];</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">if</span> (! <span class="keyword">empty</span>($requestLanguage))</span><br><span class="line">                        $Container-&gt;offsetSet(<span class="string">'lang'</span>, $requestLanguage);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (! <span class="keyword">empty</span>($FiledValParts)) &#123;</span><br><span class="line">            $FiledValParts = $headers-&gt;get(<span class="string">'Accept-Language'</span>)-&gt;getPrioritized();</span><br><span class="line">            <span class="keyword">if</span> (count($FiledValParts) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">foreach</span> ($FiledValParts <span class="keyword">as</span> $part) &#123;</span><br><span class="line">                    <span class="keyword">foreach</span> ($correspond <span class="keyword">as</span> $lang =&gt; $langItem) &#123;</span><br><span class="line">                        $browserLanguage = $part-&gt;getLanguage();</span><br><span class="line">                        <span class="keyword">if</span> (in_array($browserLanguage, $langItem[<span class="string">'include'</span>])) &#123;</span><br><span class="line">                            $resultLanguage = $lang;</span><br><span class="line">                            $resultLanguageAbbr = $langItem[<span class="string">'abbr'</span>];</span><br><span class="line">                            <span class="keyword">break</span> <span class="number">2</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (! <span class="keyword">empty</span>($resultLanguage) &amp;&amp; ! <span class="keyword">empty</span>($resultLanguageAbbr)) &#123;</span><br><span class="line">            <span class="comment">// 设置语言</span></span><br><span class="line">            $MvcTranslator-&gt;setLocale($resultLanguage);</span><br><span class="line">            <span class="comment">// 设置要加载的其它的语言文件</span></span><br><span class="line">            $MvcTranslator-&gt;addTranslationFile(<span class="string">'phpArray'</span>, <span class="keyword">__DIR__</span> . <span class="string">'/../../vendor/ZF2/resources/languages/'</span> . $resultLanguageAbbr . <span class="string">'/Zend_Validate.php'</span>, <span class="string">'default'</span>, $resultLanguage);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        \Zend\Validator\AbstractValidator::setDefaultTranslator($MvcTranslator);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>module.config.php<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'translator'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">'locale'</span> =&gt; <span class="string">'en_US'</span>,</span><br><span class="line">        <span class="string">'translation_file_patterns'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">            <span class="keyword">array</span>(</span><br><span class="line">                <span class="comment">//'type'     =&gt; 'gettext',</span></span><br><span class="line">                <span class="string">'type'</span>     =&gt; <span class="string">'phparray'</span>,</span><br><span class="line">                <span class="string">'base_dir'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../language'</span>,</span><br><span class="line">                <span class="comment">//'pattern'  =&gt; '%s.mo',</span></span><br><span class="line">                <span class="string">'pattern'</span>  =&gt; <span class="string">'%s.php'</span>,</span><br><span class="line">            ),</span><br><span class="line">        ),</span><br><span class="line">	<span class="string">'correspond'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">			<span class="string">'zh_CN'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">				<span class="string">'abbr'</span> =&gt; <span class="string">'zh'</span>,</span><br><span class="line">				<span class="string">'include'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">					<span class="string">'zh'</span>,</span><br><span class="line">					<span class="string">'zh-CN'</span></span><br><span class="line">				)</span><br><span class="line">			),</span><br><span class="line">			<span class="string">'en_US'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">				<span class="string">'abbr'</span> =&gt; <span class="string">'en'</span>,</span><br><span class="line">				<span class="string">'include'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">					<span class="string">'en'</span>,</span><br><span class="line">					<span class="string">'en-US'</span></span><br><span class="line">				)</span><br><span class="line">			),</span><br><span class="line">			<span class="string">'zh_TW'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">				<span class="string">'abbr'</span> =&gt; <span class="string">'zh_TW'</span>,</span><br><span class="line">				<span class="string">'include'</span> =&gt; <span class="keyword">array</span>(</span><br><span class="line">					<span class="string">'zh-TW'</span></span><br><span class="line">				)</span><br><span class="line">			)</span><br><span class="line">		)</span><br><span class="line">    )</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>多少为所谓，重要的是那颗学习成长的心！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechat-reward-image.png" alt="Arthur Li WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ZendFramework2/" rel="tag"># ZendFramework2</a>
+          
+            <a href="/tags/translate/" rel="tag"># translate</a>
+          
+            <a href="/tags/多语言配置/" rel="tag"># 多语言配置</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/15/markdown-use/" rel="next" title="markdown简单使用介绍">
+                <i class="fa fa-chevron-left"></i> markdown简单使用介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/12/google-skill/" rel="prev" title="google搜索技巧与常用命令">
+                google搜索技巧与常用命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/10/11/zf2-trans/" data-title="Zendframework2" data-url="http://arthurli.github.io/2015/10/11/zf2-trans/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.jpg" alt="Arthur Li">
+          <p class="site-author-name" itemprop="name">Arthur Li</p>
+          <p class="site-description motion-element" itemprop="description">记录者用于记录arthur的个人学习经历，工作中解决的问题，可以加群一起学习成长：345885057。</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Zend-framework-2-多语言配置"><span class="nav-number">1.</span> <span class="nav-text">Zend framework 2 多语言配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">1.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Li</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user">本站访客</i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人</span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye">本站总访问量</i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"arthurs"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
